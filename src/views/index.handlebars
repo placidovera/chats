@@ -1,0 +1,8 @@
+<h1>Subir foto de usuario</h1>
+
+<form action="/api/user" method="POST" enctype="multipart/form-data">
+  <label for="avatar">Seleccionar imagen:</label>
+  <input type="file" name="avatar" id="avatar" accept="image/*" required />
+
+  <button type="submit">Subir foto</button>
+</form>
