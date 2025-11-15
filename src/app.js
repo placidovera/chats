@@ -8,24 +8,28 @@ import { Server } from "socket.io";
 
 const app = express();
 
-app.use(express.static(path.join(process.cwd(), "src", "public")));
+// Servir archivos estáticos
+app.use(express.static(path.join(process.cwd(), "src/public")));
 
+// Configuración Handlebars
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
-app.set("views", path.join(process.cwd(), "src", "views"));
+app.set("views", path.join(process.cwd(), "src/views"));
 
+// Rutas
 app.use("/api/user", userRoute);
 app.use("/api/login", loginRoute);
 app.use("/", viewRoutes);
 
-const serverHttp = app.listen(8080, () => {
-  console.log("App corriendo en el puerto 8080");
+// Puerto dinámico para Render
+const PORT = process.env.PORT || 8080;
+const serverHttp = app.listen(PORT, () => {
+  console.log(`App corriendo en el puerto ${PORT}`);
 });
 
+// Socket.io
 const serverSocket = new Server(serverHttp);
-
 const BBDD = [];
-
 let usuariosConectados = 0;
 
 serverSocket.on("connection", (socket) => {
@@ -38,14 +42,11 @@ serverSocket.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     usuariosConectados--;
-    console.log("Usuario desconectado. Total:", usuariosConectados);
     serverSocket.emit("usuarios_conectados", usuariosConectados);
   });
 
   socket.on("mensaje", (data) => {
-    console.log("Mensaje recibido:", data);
     BBDD.push(data);
-    
     serverSocket.emit("Lista de mensajes", BBDD);
   });
 });
