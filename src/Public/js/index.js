@@ -4,6 +4,7 @@ const socket = io();
 const box = document.querySelector("#box");
 const appChat = document.querySelector("#app-chat");
 const userConect = document.querySelector("#usuarios");
+const conectIndicator = document.querySelector("#conect");
 
 let user = "";
 

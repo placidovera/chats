@@ -2,7 +2,7 @@ import express from "express";
 import { engine } from "express-handlebars";
 import path from "node:path";
 import userRoute from "./router/userRouter.js";
-import petsRoute from "./router/pets.js";
+import loginRoute from "./router/userRoute.js";
 import viewRoutes from "./router/view.js";
 import { Server } from "socket.io";
 
@@ -15,7 +15,7 @@ app.set("view engine", "handlebars");
 app.set("views", path.join(process.cwd(), "src", "views"));
 
 app.use("/api/user", userRoute);
-app.use("/api/pets", petsRoute);
+app.use("/api/login", loginRoute);
 app.use("/", viewRoutes);
 
 const serverHttp = app.listen(8080, () => {
@@ -33,15 +33,12 @@ serverSocket.on("connection", (socket) => {
   console.log("Nuevo cliente conectado con id ->", socket.id);
   console.log("Usuarios conectados:", usuariosConectados);
 
-  socket.emit("usuarios_conectados", usuariosConectados);
   socket.emit("Lista de mensajes", BBDD);
-
   serverSocket.emit("usuarios_conectados", usuariosConectados);
 
   socket.on("disconnect", () => {
     usuariosConectados--;
     console.log("Usuario desconectado. Total:", usuariosConectados);
-
     serverSocket.emit("usuarios_conectados", usuariosConectados);
   });
 

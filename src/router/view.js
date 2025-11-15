@@ -11,5 +11,8 @@ route.get("/perfil",(req,res)=>{
 route.get("/socket", (req, res) => {
   res.render("chat",{});
 });
+route.get("/form",(req,res)=>{
+  res.render("form",{});
+})
 
 export default route;

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { upLoad } from "../Utis.js";
+import { upLoad } from "../utis.js";
 
 const route = Router();
 const buser = [];
